@@ -4,6 +4,7 @@ import 'package:potato_notes/data/database.dart';
 import 'package:potato_notes/data/database/shared.dart';
 import 'package:potato_notes/internal/app_info.dart';
 import 'package:potato_notes/internal/preferences.dart';
+import 'package:potato_notes/internal/sync/controller/account_controller.dart';
 import 'package:potato_notes/locator.dart';
 import 'package:potato_notes/routes/main_page.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,8 @@ main() async {
   db = AppDatabase(constructDb());
   setupLocator();
   await locator<Preferences>().loadData();
+  final account = AccountController();
+  account.login("broodrooster", "broodrooster");
   runApp(PotatoNotes());
 }
 
