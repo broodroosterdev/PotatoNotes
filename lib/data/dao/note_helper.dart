@@ -13,15 +13,23 @@ class NoteHelper extends DatabaseAccessor<AppDatabase> with _$NoteHelperMixin {
     switch (mode) {
       case ReturnMode.NORMAL:
         return (select(notes)
-              ..where((table) => table.archived.not() & table.deleted.not()))
+              ..where((table) => table.archived.not() & table.deleted.not() & table.id.contains("-synced").not()))
             .get();
       case ReturnMode.ARCHIVE:
         return (select(notes)
-              ..where((table) => table.archived & table.deleted.not()))
+              ..where((table) => table.archived & table.deleted.not() & table.id.contains("-synced").not()))
             .get();
       case ReturnMode.TRASH:
         return (select(notes)
-              ..where((table) => table.archived.not() & table.deleted))
+              ..where((table) => table.archived.not() & table.deleted & table.id.contains("-synced").not()))
+            .get();
+      case ReturnMode.SYNCED:
+        return (select(notes)
+              ..where((table) => table.id.contains("-synced")))
+            .get();
+      case ReturnMode.LOCAL:
+        return (select(notes)
+          ..where((table) => table.id.contains("-synced").not()))
             .get();
       case ReturnMode.ALL:
       default:
@@ -38,15 +46,23 @@ class NoteHelper extends DatabaseAccessor<AppDatabase> with _$NoteHelperMixin {
         break;
       case ReturnMode.NORMAL:
         selectQuery = select(notes)
-          ..where((table) => table.archived.not() & table.deleted.not());
+          ..where((table) => table.archived.not() & table.deleted.not() & table.id.contains("-synced").not());
         break;
       case ReturnMode.ARCHIVE:
         selectQuery = select(notes)
-          ..where((table) => table.archived & table.deleted.not());
+          ..where((table) => table.archived & table.deleted.not() & table.id.contains("-synced").not());
         break;
       case ReturnMode.TRASH:
         selectQuery = select(notes)
-          ..where((table) => table.archived.not() & table.deleted);
+          ..where((table) => table.archived.not() & table.deleted & table.id.contains("-synced").not());
+        break;
+      case ReturnMode.SYNCED:
+        selectQuery = select(notes)
+          ..where((table) => table.id.contains("synced"));
+        break;
+      case ReturnMode.LOCAL:
+        selectQuery = select(notes)
+          ..where((table) => table.id.contains("synced").not());
         break;
     }
 
@@ -120,8 +136,9 @@ class NoteHelper extends DatabaseAccessor<AppDatabase> with _$NoteHelperMixin {
     return queryNotes;
   }
 
-  Future saveNote(Note note) =>
-      into(notes).insert(note, mode: InsertMode.replace);
+  Future saveNote(Note note) {
+      into(notes).insert(note, mode: InsertMode.replace);print("The note id is: " + note.id);
+  }
 
   Future deleteNote(Note note) => delete(notes).delete(note);
 }
@@ -152,4 +169,6 @@ enum ReturnMode {
   NORMAL,
   ARCHIVE,
   TRASH,
+  SYNCED,
+  LOCAL
 }
