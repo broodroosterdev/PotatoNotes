@@ -18,6 +18,7 @@ import 'package:potato_notes/internal/app_info.dart';
 import 'package:potato_notes/internal/note_colors.dart';
 import 'package:potato_notes/internal/preferences.dart';
 import 'package:potato_notes/internal/utils.dart';
+import 'package:potato_notes/locator.dart';
 import 'package:potato_notes/routes/note_page_image_gallery.dart';
 import 'package:potato_notes/widget/note_color_selector.dart';
 import 'package:potato_notes/widget/note_toolbar.dart';
@@ -25,6 +26,7 @@ import 'package:potato_notes/widget/note_view_images.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_text_editor/rich_text_editor.dart';
 import 'package:spicy_components/spicy_components.dart';
+import 'package:uuid/uuid.dart';
 
 class NotePage extends StatefulWidget {
   final Note note;
@@ -124,7 +126,7 @@ class _NotePageState extends State<NotePage> {
       generateId();
     }
 
-    if (prefs == null) prefs = Provider.of<Preferences>(context);
+    if (prefs == null) prefs = locator<Preferences>();
     if (appInfo == null) appInfo = Provider.of<AppInfoProvider>(context);
 
     if (note.color != 0) {

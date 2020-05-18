@@ -39,6 +39,9 @@ dependencies:
       url: https://github.com/namhyun-gu/flutter_rich_text_editor
   spicy_components:
     git: https://github.com/HrX03/SpicyUIComponents
+  get_it:
+  json_annotation:
+
 
 dev_dependencies:
   flutter_test:
