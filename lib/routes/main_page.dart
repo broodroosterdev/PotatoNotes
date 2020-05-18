@@ -9,6 +9,7 @@ import 'package:potato_notes/data/dao/note_helper.dart';
 import 'package:potato_notes/data/database.dart';
 import 'package:potato_notes/internal/app_info.dart';
 import 'package:potato_notes/internal/preferences.dart';
+import 'package:potato_notes/internal/sync/sync_routine.dart';
 import 'package:potato_notes/internal/utils.dart';
 import 'package:potato_notes/locator.dart';
 import 'package:potato_notes/routes/note_page.dart';
@@ -77,7 +78,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      body: StreamBuilder<List<Note>>(
+      body: RefreshIndicator(
+        child: StreamBuilder<List<Note>>(
         stream: helper.noteStream(mode),
         builder: (context, snapshot) {
           if ((snapshot.data?.length ?? 0) != 0) {
@@ -260,6 +262,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             );
         },
       ),
+      onRefresh: () => sync(),
+      ),
       extendBody: true,
       bottomNavigationBar: selecting
           ? SelectionBar(
@@ -313,5 +317,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       default:
         return MapEntry(appInfo.noNotesIllustration, "No notes were added yet");
     }
+  }
+  Future<void> sync() async {
+    await SyncRoutine().syncNotes();
   }
 }
