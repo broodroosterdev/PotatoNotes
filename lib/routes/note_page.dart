@@ -100,15 +100,8 @@ class _NotePageState extends State<NotePage> {
   }
 
   void generateId() async {
-    Note lastNote;
-    List<Note> notes = await helper.listNotes(ReturnMode.ALL);
-    notes.sort((a, b) => a.id.compareTo(b.id));
-
-    if (notes.isNotEmpty) {
-      lastNote = notes.last;
-    }
-
-    if (note.id == null) note = note.copyWith(id: (lastNote?.id ?? 0) + 1);
+    var uuid = Uuid();
+    if (note.id == null) note = note.copyWith(id: uuid.v4());
   }
 
   @override
@@ -438,6 +431,8 @@ class _NotePageState extends State<NotePage> {
           styleJson: ContentStyle(styleJson),
           content: contentController.text.trim(),
           list: note.listContent.content.isEmpty ? false : note.list,
+          lastModifyDate: DateTime.now(),
+          synced: false
         );
 
         note.listContent.content.removeWhere((item) => item.text.trim() == "");

@@ -8,7 +8,7 @@ part of 'database.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Note extends DataClass implements Insertable<Note> {
-  final int id;
+  final String id;
   final String title;
   final String content;
   final ContentStyle styleJson;
@@ -48,12 +48,12 @@ class Note extends DataClass implements Insertable<Note> {
   factory Note.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final intType = db.typeSystem.forDartType<int>();
     return Note(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
       content:
@@ -92,7 +92,7 @@ class Note extends DataClass implements Insertable<Note> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
+      map['id'] = Variable<String>(id);
     }
     if (!nullToAbsent || title != null) {
       map['title'] = Variable<String>(title);
@@ -156,7 +156,7 @@ class Note extends DataClass implements Insertable<Note> {
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Note(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
       styleJson: serializer.fromJson<ContentStyle>(json['styleJson']),
@@ -180,7 +180,7 @@ class Note extends DataClass implements Insertable<Note> {
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
       'content': serializer.toJson<String>(content),
       'styleJson': serializer.toJson<ContentStyle>(styleJson),
@@ -202,7 +202,7 @@ class Note extends DataClass implements Insertable<Note> {
   }
 
   Note copyWith(
-          {int id,
+          {String id,
           String title,
           String content,
           ContentStyle styleJson,
@@ -330,7 +330,7 @@ class Note extends DataClass implements Insertable<Note> {
 }
 
 class NotesCompanion extends UpdateCompanion<Note> {
-  final Value<int> id;
+  final Value<String> id;
   final Value<String> title;
   final Value<String> content;
   final Value<ContentStyle> styleJson;
@@ -369,7 +369,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.synced = const Value.absent(),
   });
   NotesCompanion.insert({
-    @required int id,
+    @required String id,
     this.title = const Value.absent(),
     @required String content,
     @required ContentStyle styleJson,
@@ -394,7 +394,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
         listContent = Value(listContent),
         reminders = Value(reminders);
   static Insertable<Note> custom({
-    Expression<int> id,
+    Expression<String> id,
     Expression<String> title,
     Expression<String> content,
     Expression<String> styleJson,
@@ -436,7 +436,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
   }
 
   NotesCompanion copyWith(
-      {Value<int> id,
+      {Value<String> id,
       Value<String> title,
       Value<String> content,
       Value<ContentStyle> styleJson,
@@ -480,7 +480,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      map['id'] = Variable<String>(id.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -547,11 +547,11 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   final String _alias;
   $NotesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedTextColumn _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
       'id',
       $tableName,
       false,
@@ -842,7 +842,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id, synced};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Note map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

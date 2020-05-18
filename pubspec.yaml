@@ -33,7 +33,7 @@ dependencies:
   http:
   jwt_decode:
   intl:
-  
+  uuid:
   rich_text_editor:
     git:
       url: https://github.com/namhyun-gu/flutter_rich_text_editor
