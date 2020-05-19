@@ -41,6 +41,7 @@ dependencies:
     git: https://github.com/HrX03/SpicyUIComponents
   get_it:
   json_annotation:
+  recase:
 
 
 dev_dependencies:
@@ -48,7 +49,6 @@ dev_dependencies:
     sdk: flutter
   moor_generator:
   build_runner:
-  json_serializable:
 
 flutter:
   uses-material-design: true
