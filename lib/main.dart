@@ -17,8 +17,7 @@ main() async {
   db = AppDatabase(constructDb());
   setupLocator();
   await locator<Preferences>().loadData();
-  final account = AccountController();
-  account.login("broodrooster", "broodrooster");
+  locator<AccountController>().login("broodrooster", "broodrooster");
   runApp(PotatoNotes());
 }
 
