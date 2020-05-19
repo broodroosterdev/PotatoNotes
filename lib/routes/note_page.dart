@@ -100,8 +100,7 @@ class _NotePageState extends State<NotePage> {
   }
 
   void generateId() async {
-    var uuid = Uuid();
-    if (note.id == null) note = note.copyWith(id: uuid.v4());
+    if (note.id == null) note = note.copyWith(id: locator<Uuid>().v4());
   }
 
   @override
