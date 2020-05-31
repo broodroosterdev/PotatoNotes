@@ -319,6 +319,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
   Future<void> sync() async {
-    await locator<SyncRoutine>().syncNotes();
+    Future(() {
+      locator<SyncRoutine>().syncNotes();
+    });
   }
 }
