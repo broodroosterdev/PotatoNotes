@@ -23,6 +23,7 @@ class Preferences extends ChangeNotifier {
   String _refreshToken;
   String _username;
   String _email;
+  int _lastUpdated;
 
   String get masterPass => _masterPass;
   ThemeMode get themeMode => _themeMode;
@@ -32,6 +33,7 @@ class Preferences extends ChangeNotifier {
   Future<String> get token async => await getToken();
   String get username => _username;
   String get email => _email;
+  int get lastUpdated => _lastUpdated;
 
   set masterPass(String value) {
     _masterPass = value;
@@ -87,6 +89,12 @@ class Preferences extends ChangeNotifier {
     notifyListeners();
   }
 
+  set lastUpdated(int value) {
+    _lastUpdated = value;
+    prefs.setLastUpdated(value);
+    notifyListeners();
+  }
+
   void loadData() async {
     prefs = await SharedPrefs.newInstance();
     keystore = Keystore();
@@ -100,6 +108,7 @@ class Preferences extends ChangeNotifier {
     refreshToken = await prefs.getRefreshToken();
     username = await prefs.getUsername();
     email = await prefs.getEmail();
+    lastUpdated = await prefs.getLastUpdated();
   }
 
   Future<String> getToken() async {
@@ -117,7 +126,6 @@ class Preferences extends ChangeNotifier {
         print(response.body);
       }
     }
-
     return _accessToken;
   }
 }

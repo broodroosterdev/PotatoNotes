@@ -95,4 +95,12 @@ class SharedPrefs {
   void setEmail(String value) async {
     await prefs.setString("email", value);
   }
+
+  Future<int> getLastUpdated() async {
+    return prefs.getInt("last_updated") ?? 0;
+  }
+
+  void setLastUpdated(int value) async {
+    await prefs.setInt("last_updated", value);
+  }
 }
