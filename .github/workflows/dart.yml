@@ -13,7 +13,7 @@ jobs:
       with:
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter build apk
+    - run: flutter build apk —release —flavor ci —split-per-abi
     - uses: actions/upload-artifact@v2
       with:
         name: android-apk
