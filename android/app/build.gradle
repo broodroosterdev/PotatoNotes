@@ -71,6 +71,11 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    productFlavors {
+        ci {
+            signingConfig null
+        }
+    }
 }
 
 flutter {
