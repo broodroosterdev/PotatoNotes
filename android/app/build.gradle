@@ -61,6 +61,9 @@ android {
         release {
             signingConfig signingConfigs.release
         }
+        ci {
+            signingConfig signingConfigs.debug
+        }
     }
 }
 
