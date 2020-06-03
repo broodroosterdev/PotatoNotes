@@ -56,13 +56,11 @@ android {
     }
     buildTypes {
         debug {
-            signingConfig null
         }
         release {
             signingConfig signingConfigs.release
         }
         ci {
-            signingConfig null
         }
     }
 }
