@@ -54,13 +54,40 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    buildTypes {
-        debug {
+
+    flavorDimensions "app"
+    productFlavors {
+        def debugSigning = signingConfigs.debug
+        def releaseSigning = signingConfigs.release
+        
+        dev {
+            signingConfig debugSigning
+            applicationId = "com.potatoproject.notes.dev"
+            dimension "app"
+            manifestPlaceholders = [
+                label: "Notes Dev",
+                icon: "@drawable/ic_launcher_debug",
+            ]
         }
-        release {
-            signingConfig signingConfigs.release
-        }
+        
         ci {
+            signingConfig debugSigning
+            applicationId = "com.potatoproject.notes.ci"
+            dimension "app"
+            manifestPlaceholders = [
+                label: "Notes CI",
+                icon: "@drawable/ic_launcher_ci",
+            ]
+        }
+        
+        production {
+            signingConfig releaseSigning
+            applicationId = "com.potatoproject.notes"
+            dimension "app"
+            manifestPlaceholders = [
+                label: "Notes",
+                icon: "@drawable/ic_launcher",
+            ]
         }
     }
 }
