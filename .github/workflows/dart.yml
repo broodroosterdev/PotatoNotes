@@ -13,8 +13,8 @@ jobs:
       with:
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter build apk --release --flavor ci --split-per-abi
+    - run: flutter build apk --split-per-abi --debug --flavor=ci
     - uses: actions/upload-artifact@v2
       with:
         name: android-apk
-        path: "build/app/outputs/flutter-apk/app-*-release.apk"
+        path: "build/app/outputs/apk/ci/release/app-ci-*-debug.apk"
